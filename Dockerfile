@@ -19,10 +19,10 @@ WORKDIR /home/runner
 
 # GitHub Actionsランナーのダウンロード（バージョンは適宜最新にしてください）
 ARG RUNNER_VERSION="2.316.1"
-RUN curl -o actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -L \
-  https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
-  && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
-  && rm actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+RUN curl -o actions-runner-linux-arm64-${RUNNER_VERSION}.tar.gz -L \
+  https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-arm64-${RUNNER_VERSION}.tar.gz \
+  && tar xzf ./actions-runner-linux-arm64-${RUNNER_VERSION}.tar.gz \
+  && rm actions-runner-linux-arm64-${RUNNER_VERSION}.tar.gz
 
 # 起動スクリプト（entrypoint.sh）をコピー
 COPY --chown=runner:runner entrypoint.sh ./entrypoint.sh
