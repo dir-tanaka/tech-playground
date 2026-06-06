@@ -1,0 +1,11 @@
+name: Self-Hosted Runner Demo
+
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build-and-test:
+    runs-on: self-hosted
+    steps:
+      - name: Hello world
+        run: echo hello, world!
