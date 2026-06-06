@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
   sudo \
   libicu-dev \
   build-essential \
+  dotnet-runtime-8.0 \
   && rm -rf /var/lib/apt/lists/*
 
 # ランナー用の一般ユーザーを作成（rootでの実行は非推奨のため）
