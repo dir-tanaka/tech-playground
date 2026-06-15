@@ -1,11 +1,41 @@
-name: Self-Hosted Runner Demo
+name: GCE Instance Retrieval with Workload Identity
 
 on:
   push:
     branches: ["main"]
+
 jobs:
-  build-and-test:
-    runs-on: self-hosted
+  get-gce-instances:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
-      - name: Hello world
-        run: echo hello, world!
+      - name: Authenticate with Workload Identity
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/615629685316/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: github-actions-sa@exercise-terraform.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_lifetime: 3600s
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Verify Authentication
+        run: |
+          echo "=== Current authenticated account ==="
+          gcloud config get-value account
+
+          echo ""
+          echo "=== Service Account Details ==="
+          gcloud iam service-accounts describe github-actions-sa@exercise-terraform.iam.gserviceaccount.com \
+            --project=exercise-terraform
+
+          echo ""
+          echo "=== Current Project ==="
+          gcloud config get-value project
+
+          echo ""
+          echo "✅ Authentication successful!"
