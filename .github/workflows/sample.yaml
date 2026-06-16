@@ -12,6 +12,9 @@ jobs:
       id-token: write
 
     steps:
+      # 1. 最初のリポジトリをチェックアウトする（これが抜けている可能性が高いです）
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Authenticate with Workload Identity
         uses: google-github-actions/auth@v2
         with:
