@@ -117,7 +117,7 @@ PR Number: {PR_NUMBER}
 
             # チャットセッションを作成
             chat = gemini_client.chats.create(
-                model="gemini-2.5-pro",
+                model="gemini-3.5-flash",
                 config=types.GenerateContentConfig(
                     system_instruction=system_instruction,
                     tools=gemini_tools,
