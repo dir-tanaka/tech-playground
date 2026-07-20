@@ -17,17 +17,17 @@ PR_NUMBER = int(PR_NUMBER_STR) if PR_NUMBER_STR.isdigit() else 0
 
 def sanitize_schema(schema: dict) -> dict:
     """
-    Gemini APIがサポートしていないJSON Schemaのメタキー（$ref, $defs, $schema, oneOf等）を
-    再帰的に除去・クリーンアップする関数
+    Gemini APIがサポートしていないJSON Schemaのメタキーを再帰的に除去・クリーンアップする関数
     """
     if not isinstance(schema, dict):
         return schema
 
     cleaned = {}
-    # Gemini APIが400 INVALID_ARGUMENTエラーを返す原因となるキーを排除
+    # Gemini APIが 400 INVALID_ARGUMENT (Unknown name) で拒絶するキーを一覧化
     forbidden_keys = {
         "$schema", "$id", "$ref", "$defs", "definitions", 
-        "oneOf", "anyOf", "allOf"
+        "oneOf", "anyOf", "allOf",
+        "additionalProperties", "additional_properties"  # 👈 ここを追加！
     }
 
     for key, value in schema.items():
@@ -47,7 +47,7 @@ def sanitize_schema(schema: dict) -> dict:
         else:
             cleaned[key] = value
 
-    # propertiesが存在するがtypeが未定義の場合はOBJECTを自動設定（Gemini仕様対策）
+    # propertiesが存在するがtypeが未定義の場合はOBJECTを自動設定
     if "properties" in cleaned and "type" not in cleaned:
         cleaned["type"] = "OBJECT"
 
