@@ -43,13 +43,20 @@ async def main():
             # ※簡易的にMCPツールをGeminiのtools形式として渡す実装例：
             gemini_tools = []
             for tool in mcp_tools.tools:
+                # 1. inputSchema のディープコピーを作成して整形する
+                schema = dict(tool.inputSchema) if tool.inputSchema else {}
+                
+                # 2. Pydanticのバリデーションで弾かれるメターフィールドを削除する
+                schema.pop("$schema", None)
+                schema.pop("$id", None)
+
                 gemini_tools.append(
                     types.Tool(
                         function_declarations=[
                             types.FunctionDeclaration(
                                 name=tool.name,
                                 description=tool.description,
-                                parameters=tool.inputSchema
+                                parameters=schema # 👈 整形済みの辞書を渡す
                             )
                         ]
                     )
