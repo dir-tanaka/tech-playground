@@ -37,7 +37,7 @@ jobs:
       - name: Run AI Reviewer
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.REVIEWER_GITHUB_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           PR_NUMBER: ${{ github.event.number }}
