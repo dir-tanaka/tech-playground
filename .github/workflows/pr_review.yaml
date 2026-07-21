@@ -1,4 +1,4 @@
-name: AI PR Reviewer with MCP
+name: Gemini PR Reviewer with MCP
 
 on:
   pull_request:
@@ -25,19 +25,22 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
+      # 💡 競合を防ぐため、仮想環境を作ってその中に pip インストールする
+      - name: Install dependencies in virtual environment
         run: |
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
-          pip install mcp anthropic
+          pip install mcp google-genai
 
+      # 💡 実行時も仮想環境をアクティベートしてスクリプトを叩く
       - name: Run AI Reviewer
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # MCPサーバーがGitHub APIを叩くためのトークン（Secretsに登録しておきます）
-          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.REVIEWER_GITHUB_TOKEN }}
-          # レビュー対象の情報を環境変数でスクリプトに渡す
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
+          source .venv/bin/activate
           python scripts/mcp_reviewer.py
