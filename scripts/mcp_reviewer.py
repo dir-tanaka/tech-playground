@@ -8,7 +8,7 @@ from google.genai import types
 
 # 環境変数の取得
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-GITHUB_TOKEN = os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN")
+GITHUB_TOKEN = os.environ.get("PERSONAL_ACCESS_TOKEN")
 REPO_OWNER = os.environ.get("REPOSITORY_OWNER")
 REPO_NAME = os.environ.get("REPOSITORY_NAME")
 PR_NUMBER_STR = os.environ.get("PR_NUMBER", "0")
